@@ -1,0 +1,288 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#35483d">
+<title>Deco Adhesivos Eldorado | Revestimientos</title>
+<style>
+:root {
+  --cream:#f4f0e8;
+  --sand:#c6b49a;
+  --green:#35483d;
+  --dark:#292824;
+  --white:#fff;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--dark);
+font-family:Arial,Helvetica,sans-serif}
+header{background:var(--green);color:white;padding:22px 6%;
+display:flex;justify-content:space-between;align-items:center;gap:16px}
+.brand{font-size:23px;font-weight:700;letter-spacing:.5px}
+.brand small{display:block;font-size:11px;font-weight:400;
+letter-spacing:3px;margin-top:7px;color:#e2d6c3}
+.cart{background:var(--sand);color:var(--dark);border:0;
+border-radius:30px;padding:12px 18px;font-weight:bold;cursor:pointer}
+.hero{padding:65px 7%;background:linear-gradient(110deg,#35483d,#536455);
+color:white}
+.hero span{color:#e0c9a8;text-transform:uppercase;
+letter-spacing:3px;font-size:12px}
+.hero h1{font-family:Georgia,serif;font-size:clamp(34px,5vw,58px);
+font-weight:400;max-width:700px;line-height:1.12;margin:18px 0}
+.hero p{max-width:550px;line-height:1.7;color:#eee9df}
+main{max-width:1200px;margin:auto;padding:36px 20px 70px}
+.tools{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:22px}
+input,select{padding:13px 15px;border:1px solid #d5ccbd;
+border-radius:8px;background:white;font-size:15px}
+input{flex:1;min-width:210px}
+select{min-width:190px}
+h2{font-family:Georgia,serif;font-weight:400;font-size:30px}
+.intro{color:#716e65;line-height:1.6}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.product{background:white;border-radius:12px;overflow:hidden;
+border:1px solid #e5ded2}
+.product img{width:100%;height:230px;object-fit:cover;
+background:#e5dfd3;display:block}
+.product-info{padding:18px}
+.tag{font-size:11px;text-transform:uppercase;letter-spacing:1px;
+color:#6b7867}
+.product h3{font-family:Georgia,serif;font-size:21px;font-weight:400;
+margin:9px 0}
+.code{font-size:12px;color:#89857b}
+.price{font-size:17px;font-weight:bold;margin:16px 0}
+.add{width:100%;padding:12px;border:0;border-radius:6px;
+background:var(--green);color:white;font-size:14px;cursor:pointer}
+.add:hover{background:#243329}
+.empty{padding:28px;background:white;border-radius:10px;color:#716e65}
+footer{background:var(--dark);color:#eee9df;padding:30px 7%;
+line-height:1.8}
+footer strong{color:#e0c9a8}
+.overlay{position:fixed;inset:0;background:#0008;z-index:5;display:none}
+.drawer{position:fixed;right:0;top:0;height:100%;width:min(440px,100%);
+background:white;z-index:6;padding:24px;overflow:auto;display:none}
+.drawer-head{display:flex;justify-content:space-between;align-items:center}
+.drawer h2{margin:8px 0 20px}
+.close{border:0;background:#eee;border-radius:50%;width:38px;height:38px;
+font-size:22px;cursor:pointer}
+.cart-row{padding:14px 0;border-bottom:1px solid #e8e3da}
+.cart-row strong{display:block;margin-bottom:7px}
+.qty{display:flex;align-items:center;gap:12px;margin-top:9px}
+.qty button{border:1px solid #ddd;background:#f5f2ec;border-radius:5px;
+padding:5px 11px;cursor:pointer}
+.total{font-size:20px;font-weight:bold;margin:22px 0}
+.whatsapp{width:100%;padding:15px;border:0;border-radius:7px;
+background:var(--green);color:white;font-weight:bold;cursor:pointer}
+.note{font-size:12px;color:#777;margin-top:12px;line-height:1.5}
+@media(max-width:850px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){
+ header{padding:18px 5%}.brand{font-size:18px}.hero{padding:48px 6%}
+ main{padding:25px 14px 50px}.grid{grid-template-columns:1fr}
+ .product img{height:250px}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">DECO ADHESIVOS
+    <small>ELDORADO · MISIONES</small>
+  </div>
+  <button class="cart" onclick="openCart()">Mi pedido (<span id="count">0</span>)</button>
+</header>
+
+<section class="hero">
+  <span>Renová tus espacios</span>
+  <h1>Diseño y estilo para transformar tu hogar.</h1>
+  <p>Descubrí nuestros revestimientos, placas decorativas y soluciones
+  para renovar tus ambientes de una manera práctica y elegante.</p>
+</section>
+
+<main>
+  <h2>Nuestro catálogo</h2>
+  <p class="intro">Explorá los diseños y agregá tus favoritos al pedido.
+  Consultá disponibilidad y precios por WhatsApp.</p>
+
+  <div class="tools">
+    <input id="search" type="search" placeholder="Buscar por nombre o código…"
+      oninput="renderProducts()">
+    <select id="category" onchange="renderProducts()">
+      <option value="">Todas las categorías</option>
+      <option>Placas simil mármol</option>
+      <option>Simil madera</option>
+      <option>Simil piedra y ladrillo</option>
+      <option>Placas 3D</option>
+      <option>Vinilos y terminaciones</option>
+    </select>
+  </div>
+
+  <div id="products" class="grid"></div>
+</main>
+
+<footer>
+  <strong>Deco Adhesivos Eldorado</strong><br>
+  Revestimientos y detalles que transforman tus espacios.<br>
+  Eldorado, Misiones, Argentina
+</footer>
+
+<div id="overlay" class="overlay" onclick="closeCart()"></div>
+<aside id="drawer" class="drawer">
+  <div class="drawer-head">
+    <h2>Tu pedido</h2>
+    <button class="close" onclick="closeCart()">×</button>
+  </div>
+  <div id="cartItems"></div>
+  <div class="total" id="total">Total: a confirmar</div>
+  <button class="whatsapp" onclick="sendWhatsApp()">Consultar pedido por WhatsApp</button>
+  <p class="note">Los precios y la disponibilidad se confirmarán antes
+  de cerrar la compra.</p>
+</aside>
+
+<script>
+/* CONFIGURACIÓN: completar con el WhatsApp comercial de Deco */
+const WHATSAPP = "549XXXXXXXXXX";
+
+/* Productos de muestra. Los precios reales se cargarán más adelante. */
+const products = [
+  {id:1,name:"Placa decorativa simil mármol",code:"PVC-001",
+   category:"Placas simil mármol",price:null,
+   image:"https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80"},
+  {id:2,name:"Revestimiento simil madera",code:"PVC-002",
+   category:"Simil madera",price:null,
+   image:"https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=800&q=80"},
+  {id:3,name:"Panel decorativo para interiores",code:"PVC-003",
+   category:"Placas 3D",price:null,
+   image:"https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=800&q=80"},
+  {id:4,name:"Revestimiento simil piedra",code:"PVC-004",
+   category:"Simil piedra y ladrillo",price:null,
+   image:"https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=800&q=80"},
+  {id:5,name:"Panel decorativo para living",code:"PVC-005",
+   category:"Placas 3D",price:null,
+   image:"https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=800&q=80"},
+  {id:6,name:"Vinilo decorativo",code:"VIN-001",
+   category:"Vinilos y terminaciones",price:null,
+   image:"https://images.unsplash.com/photo-1600607687644-c7171b42498f?auto=format&fit=crop&w=800&q=80"}
+];
+
+let cart = [];
+
+function money(value){
+  return new Intl.NumberFormat("es-AR",{style:"currency",currency:"ARS",
+    maximumFractionDigits:0}).format(value);
+}
+
+function renderProducts(){
+  const query=document.getElementById("search").value.toLowerCase().trim();
+  const category=document.getElementById("category").value;
+  const filtered=products.filter(p=>
+    (p.name.toLowerCase().includes(query)||p.code.toLowerCase().includes(query)) &&
+    (!category||p.category===category)
+  );
+  const container=document.getElementById("products");
+  if(!filtered.length){
+    container.innerHTML='<div class="empty">No se encontraron productos.</div>';
+    return;
+  }
+  container.innerHTML=filtered.map(p=>`
+    <article class="product">
+      <img src="${p.image}" alt="${p.name}" loading="lazy"
+        onerror="this.style.visibility='hidden'">
+      <div class="product-info">
+        <div class="tag">${p.category}</div>
+        <h3>${p.name}</h3>
+        <div class="code">Código: ${p.code}</div>
+        <div class="price">${p.price==null?"Consultar precio":money(p.price)}</div>
+        <button class="add" onclick="addToCart(${p.id})">
+          Agregar al pedido
+        </button>
+      </div>
+    </article>
+  `).join("");
+}
+
+function addToCart(id){
+  const existing=cart.find(item=>item.id===id);
+  if(existing) existing.qty++;
+  else cart.push({id,qty:1});
+  updateCart();
+}
+
+function updateCart(){
+  document.getElementById("count").textContent=
+    cart.reduce((sum,item)=>sum+item.qty,0);
+  const container=document.getElementById("cartItems");
+  if(!cart.length){
+    container.innerHTML='<p>Tu pedido está vacío.</p>';
+  }else{
+    container.innerHTML=cart.map(item=>{
+      const p=products.find(product=>product.id===item.id);
+      return `<div class="cart-row">
+        <strong>${p.name}</strong>
+        <span>${p.price==null?"Precio a confirmar":money(p.price)}</span>
+        <div class="qty">
+          <button onclick="changeQty(${p.id},-1)">−</button>
+          <span>${item.qty}</span>
+          <button onclick="changeQty(${p.id},1)">+</button>
+          <button onclick="removeItem(${p.id})">Quitar</button>
+        </div>
+      </div>`;
+    }).join("");
+  }
+  const known=cart.filter(item=>products.find(p=>p.id===item.id).price!=null);
+  const allPriced=cart.every(item=>products.find(p=>p.id===item.id).price!=null);
+  const total=known.reduce((sum,item)=>{
+    return sum+products.find(p=>p.id===item.id).price*item.qty;
+  },0);
+  document.getElementById("total").textContent=
+    allPriced?"Total: "+money(total):
+    "Total: a confirmar con el comercio";
+}
+
+function changeQty(id,delta){
+  const item=cart.find(i=>i.id===id);
+  if(!item)return;
+  item.qty+=delta;
+  if(item.qty<=0)cart=cart.filter(i=>i.id!==id);
+  updateCart();
+}
+
+function removeItem(id){
+  cart=cart.filter(i=>i.id!==id);
+  updateCart();
+}
+
+function openCart(){
+  updateCart();
+  document.getElementById("overlay").style.display="block";
+  document.getElementById("drawer").style.display="block";
+}
+function closeCart(){
+  document.getElementById("overlay").style.display="none";
+  document.getElementById("drawer").style.display="none";
+}
+
+function sendWhatsApp(){
+  if(!cart.length){
+    alert("Primero agregá productos a tu pedido.");
+    return;
+  }
+  if(!/^\d{10,15}$/.test(WHATSAPP)){
+    alert("Falta configurar el número de WhatsApp comercial de Deco Adhesivos.");
+    return;
+  }
+  let message="Hola, quiero consultar por este pedido de Deco Adhesivos Eldorado:\n\n";
+  cart.forEach(item=>{
+    const p=products.find(product=>product.id===item.id);
+    message+=`• ${p.name} (${p.code}) x ${item.qty}`;
+    if(p.price!=null)message+=` — ${money(p.price*item.qty)}`;
+    else message+=" — precio a confirmar";
+    message+="\n";
+  });
+  message+="\n¿Me podrían confirmar disponibilidad y precio final?";
+  window.open("https://wa.me/"+WHATSAPP+"?text="+encodeURIComponent(message),"_blank");
+}
+
+renderProducts();
+updateCart();
+</script>
+</body>
+</html>
